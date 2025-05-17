@@ -10,5 +10,5 @@ import java.util.UUID;
 
 @GraphQlRepository
 public interface MealTypeRepository extends JpaRepository<MealType, UUID>, QueryByExampleExecutor<MealType> {
-    Optional<MealType> findByType(String type);
+  Optional<MealType> findByType(String type);
 }

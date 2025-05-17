@@ -2,7 +2,10 @@ package com.nutrily.menuplanner.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -18,17 +21,17 @@ import java.util.UUID;
 @NoArgsConstructor
 public class DietType implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", columnDefinition = "uuid DEFAULT uuid_generate_v4()")
-    private UUID id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(name = "id", columnDefinition = "uuid DEFAULT uuid_generate_v4()")
+  private UUID id;
 
-    @Column(name = "type", length = 50)
-    private String type;
+  @Column(name = "type", length = 50)
+  private String type;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "dietType", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private Set<MealPlanner> meals;
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  @OneToMany(mappedBy = "dietType", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  @ToString.Exclude
+  private Set<MealPlanner> meals;
 
 }
