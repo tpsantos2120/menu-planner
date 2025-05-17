@@ -9,4 +9,3 @@ exclude:
     paths:
       - target/
       - .github/
-bootstrap: mvn clean compile
