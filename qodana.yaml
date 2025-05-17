@@ -1,14 +1,9 @@
 version: "1.0"
-linter: jetbrains/qodana-jvm:latest
+linter: jetbrains/qodana-jvm-community:2025.1
 profile:
   name: qodana.recommended
 include:
   - name: CheckDependencyLicenses
-  - name: JavaSpringBootApplicationInspection
-  - name: SpringJavaAutowiredFieldsWarningInspection
-  - name: SpringJavaInjectionPointsAutowiringInspection
-  - name: SpringComponentScan
-  - name: SpringBootApplicationProperties
 exclude:
   - name: All
     paths:
