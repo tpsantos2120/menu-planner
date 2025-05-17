@@ -27,6 +27,8 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
+      - name: Build with Maven
+        run: mvn clean compile
 
       - name: Run Quodana Scan
         uses: JetBrains/qodana-action@v2023.3
