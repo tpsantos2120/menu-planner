@@ -1,5 +1,6 @@
 services:
-  postgres:
+  meal_planner_db:
+    container_name: meal-planner-db
     image: 'postgres:latest'
     environment:
       - 'POSTGRES_DB=meal_planner'
@@ -9,5 +10,26 @@ services:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - spring
+
+  meal_planner_app:
+    container_name: meal-planner-app
+    image: 'ghcr.io/tpsantos2120/menu-planner:latest'
+    ports:
+      - '8080:8080'
+    depends_on:
+      - meal_planner_db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://meal_planner_db:5432/meal_planner
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: secret
+    networks:
+      - spring
+
 volumes:
   postgres_data:
+
+networks:
+  spring:
+    driver: bridge

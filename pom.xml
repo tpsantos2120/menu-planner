@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.nutrily</groupId>
     <artifactId>menu-planner</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <name>menu-planner</name>
     <description>menu-planner</description>
     <url/>
@@ -40,12 +40,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-docker-compose</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
@@ -93,22 +87,6 @@
 
     <build>
         <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <annotationProcessorPaths>-->
-<!--                        <path>-->
-<!--                            <groupId>org.springframework.boot</groupId>-->
-<!--                            <artifactId>spring-boot-configuration-processor</artifactId>-->
-<!--                        </path>-->
-<!--                        <path>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                        </path>-->
-<!--                    </annotationProcessorPaths>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -130,8 +108,9 @@
                         <image>eclipse-temurin:21-jre-alpine</image>
                     </from>
                     <to>
-                        <image>ghcr.io/${project.groupId}/${project.artifactId}:${project.version}</image>
+                        <image>ghcr.io/tpsantos2120/${project.artifactId}</image>
                         <tags>
+                            <tag>${project.version}</tag>
                             <tag>latest</tag>
                         </tags>
                     </to>
@@ -144,6 +123,9 @@
                             <port>8080</port>
                         </ports>
                         <format>Docker</format>
+                        <labels>
+                            <container.name>meal-planner-${project.artifactId}</container.name>
+                        </labels>
                     </container>
                 </configuration>
             </plugin>

@@ -55,7 +55,7 @@ public class MealPlannerController {
           predicates.add(criteriaBuilder.equal(root.get("option"), filters.getOption()));
         }
         if (filters.getMealDescription() != null) {
-          predicates.add(criteriaBuilder.like(root.get("mealDescription"),
+          predicates.add(criteriaBuilder.like(root.get("mealDescriptio"),
                   "%" + filters.getMealDescription() + "%"));
         }
         if (filters.getMealType() != null) {

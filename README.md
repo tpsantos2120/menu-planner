@@ -88,6 +88,17 @@ This project includes GitHub Actions workflows for:
 
 - `QODANA_TOKEN` - For Quodana Cloud integration (optional)
 
+### Repository Settings for GitHub Container Registry
+
+To allow GitHub Actions to push to GitHub Container Registry, you need to configure the following repository settings:
+
+1. Go to your repository's **Settings** > **Actions** > **General**
+2. Under **Workflow permissions**, select **Read and write permissions**
+3. Check **Allow GitHub Actions to create and manage pull requests**
+4. Click **Save**
+
+This ensures that the GitHub Actions workflow has the necessary permissions to push Docker images to GitHub Container Registry.
+
 ## License
 
 [MIT](LICENSE)
