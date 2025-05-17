@@ -31,7 +31,7 @@ jobs:
         run: mvn clean compile
 
       - name: Run Quodana Scan
-        uses: JetBrains/qodana-action@v2025.1
+        uses: JetBrains/qodana-action@v2023.3
         with:
           args: --baseline,qodana.sarif.json
         env:
