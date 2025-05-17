@@ -3,7 +3,7 @@ name: Quodana Code Quality
 on:
   push:
     branches: [ master ]
-  pull_request_target:
+  pull_request:
     branches: [ master ]
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
         run: mvn clean compile
 
       - name: Run Quodana Scan
-        uses: JetBrains/qodana-action@v2023.3
+        uses: JetBrains/qodana-action@v2025.1
         with:
           args: --baseline,qodana.sarif.json
         env:
