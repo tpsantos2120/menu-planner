@@ -1,0 +1,62 @@
+extend type Query {
+    # Find meal planners by meal type
+    mealPlannersByMealType(type: String!): [MealPlanner]!
+    
+    # Find meal planners by diet type
+    mealPlannersByDietType(type: String!): [MealPlanner]!
+    
+    # Find meal planners by option
+    mealPlannersByOption(option: Int!): [MealPlanner]!
+
+    # Find meal planners with pagination and specification
+    mealNPlanners(page: Int, size: Int, filters: MealPlannerFilter): MealPlannerPage!
+
+    meals(mealPlanner: MealPlannerInput): [MealPlanner]!
+}
+
+input MealPlannerInput {
+    option: Int
+    mealDescription: String
+    mealType: MealTypeInput
+    dietType: DietTypeInput
+}
+
+input MealTypeInput {
+    type: String
+}
+
+input DietTypeInput {
+    type: String
+}
+
+input MealPlannerFilter {
+    option: Int
+    mealDescription: String
+    mealType: String
+    dietType: String
+}
+
+type MealPlannerPage {
+    content: [MealPlanner]!
+    totalElements: Int!
+    totalPages: Int!
+    size: Int!
+    number: Int!
+}
+
+type Mutation {
+    # Create a new meal planner
+    createMealPlanner(input: MealPlannerInput!): MealPlanner!
+    
+    # Update an existing meal planner
+    updateMealPlanner(id: ID!, input: MealPlannerInput!): MealPlanner
+    
+    # Delete a meal planner
+    deleteMealPlanner(id: ID!): Boolean!
+    
+    # Create a new meal type
+    createMealType(input: MealTypeInput!): MealType!
+    
+    # Create a new diet type
+    createDietType(input: DietTypeInput!): DietType!
+}

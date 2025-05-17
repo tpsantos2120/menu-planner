@@ -1,0 +1,108 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1747108996061-1
+      author: stefa
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_diet_type
+                  defaultValueComputed: uuid_generate_v4()
+                  name: id
+                  type: uuid
+              - column:
+                  name: type
+                  type: VARCHAR(50)
+            tableName: diet_type
+  - changeSet:
+      id: 1747108996061-2
+      author: stefa
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_mealplanner
+                  defaultValueComputed: uuid_generate_v4()
+                  name: id
+                  type: uuid
+              - column:
+                  name: option
+                  type: INT
+              - column:
+                  name: meal_description
+                  type: VARCHAR(2000)
+              - column:
+                  name: meal_type
+                  type: VARCHAR
+              - column:
+                  name: diet_type
+                  type: VARCHAR
+            tableName: meal_planner
+  - changeSet:
+      id: 1747108996061-3
+      author: stefa
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_meal_type
+                  defaultValueComputed: uuid_generate_v4()
+                  name: id
+                  type: uuid
+              - column:
+                  name: type
+                  type: VARCHAR(50)
+            tableName: meal_type
+  - changeSet:
+      id: 1747108996061-4
+      author: stefa
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: type
+            constraintName: uk_diet_type
+            tableName: diet_type
+  - changeSet:
+      id: 1747108996061-5
+      author: stefa
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: type
+            constraintName: uk_meal_type
+            tableName: meal_type
+  - changeSet:
+      id: 1747108996061-6
+      author: stefa
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: diet_type
+            baseTableName: meal_planner
+            constraintName: FK_DIET_TYPE
+            referencedColumnNames: type
+            referencedTableName: diet_type
+  - changeSet:
+      id: 1747108996061-7
+      author: stefa
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: meal_type
+            baseTableName: meal_planner
+            constraintName: FK_MEAL_TYPE
+            referencedColumnNames: type
+            referencedTableName: meal_type
+

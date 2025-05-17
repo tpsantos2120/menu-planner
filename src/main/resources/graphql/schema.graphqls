@@ -1,0 +1,35 @@
+# MealPlanner type - represents a meal plan entry
+type MealPlanner {
+    id: ID!
+    option: Int
+    mealDescription: String
+    mealType: MealType
+    dietType: DietType
+}
+
+# MealType type - represents different meal types (breakfast, lunch, dinner, etc.)
+type MealType {
+    id: ID!
+    type: String!
+}
+
+# DietType type - represents different diet types (vegan, vegetarian, keto, etc.)
+type DietType {
+    id: ID!
+    type: String!
+}
+
+# Root Query type
+type Query {
+    # Get all meal planners
+    mealPlanners: [MealPlanner]!
+    
+    # Get a specific meal planner by ID
+    mealPlanner(id: ID!): MealPlanner
+
+    # Get all meal types
+    mealTypes: [MealType]!
+
+    # Get all diet types
+    dietTypes: [DietType]!
+}

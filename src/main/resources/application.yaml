@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: menu-planner
+  graphql:
+    path: /graphql
+    schema:
+      printer:
+        enabled: true
+    graphiql:
+      enabled: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
+
