@@ -39,8 +39,8 @@ jobs:
 
       - name: Build and Push Docker image with Jib
         if: github.event_name != 'pull_request'
-        run: mvn -B jib:build -DskipTests --file pom.xml
+        run: mvn -B jib:build --file pom.xml
 
       - name: Build Docker image with Jib (without pushing)
         if: github.event_name == 'pull_request'
-        run: mvn -B jib:dockerBuild -DskipTests --file pom.xml
+        run: mvn -B jib:dockerBuild --file pom.xml
