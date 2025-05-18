@@ -129,6 +129,18 @@
                     </container>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>8.4.3</version>
+                <configuration>
+                    <formats>
+                        <format>HTML</format>
+                    </formats>
+                    <suppressionFile>suppression.xml</suppressionFile>
+                    <autoUpdate>true</autoUpdate>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

@@ -126,17 +126,15 @@ jobs:
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
 
-      # Run dependency vulnerability scan
+      # Run dependency vulnerability scan using Maven plugin
       - name: Run dependency check
-        uses: dependency-check/Dependency-Check_Action@main
-        with:
-          project: 'Menu Planner'
-          path: '.'
-          format: 'HTML'
-          out: 'reports'
-          args: >
-            --enableExperimental
-            --suppression suppression.xml
+        run: |
+          mvn org.owasp:dependency-check-maven:check \
+            -DformatReport=HTML \
+            -DoutputDirectory=reports \
+            -DsuppressionFile=suppression.xml \
+            -DautoUpdate=true \
+            -Dformats=HTML
 
       # Upload dependency check report
       - name: Upload dependency check report
