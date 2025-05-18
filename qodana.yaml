@@ -1,11 +1,67 @@
 version: "1.0"
 linter: jetbrains/qodana-jvm-community:2025.1
+
+# Project configuration
+project:
+  name: menu-planner
+  version: 0.0.2
+  jdk:
+    version: 21
+
+# Profile configuration
 profile:
   name: qodana.recommended
+
+failureConditions:
+  severityThresholds:
+    any: 0
+
+# Include specific inspections
 include:
+  # License checks
   - name: CheckDependencyLicenses
+
+  # Java specific inspections
+  - name: JavaWarnings
+  - name: JavaAnnotator
+  - name: JavacQuickFix
+  - name: JavaErrorMessages
+
+  # Spring specific inspections
+  - name: SpringBootApplicationYaml
+  - name: SpringBootApplicationProperties
+  - name: SpringComponentScan
+  - name: SpringJavaAutowiredFieldsWarningInspection
+  - name: SpringJavaInjectionPointsAutowiringInspection
+
+  # Maven specific inspections
+  - name: MavenDuplicateDependenciesInspection
+  - name: MavenModelInspection
+  - name: MavenPropertyInParent
+  - name: MavenRedundantGroupId
+
+# Exclude paths from analysis
 exclude:
   - name: All
     paths:
       - target/
       - .github/
+      - .mvn/
+      - mvnw
+      - mvnw.cmd
+      - "**/*.md"
+      - "**/*.iml"
+      - "**/*.log"
+      - "**/*.jar"
+      - "**/*.class"
+      - "**/*.hprof"
+      - "**/*.png"
+      - "**/*.jpg"
+      - "**/*.jpeg"
+      - "**/*.gif"
+      - "**/*.svg"
+      - "**/*.ico"
+      - "**/*.woff"
+      - "**/*.woff2"
+      - "**/*.ttf"
+      - "**/*.eot"
