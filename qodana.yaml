@@ -21,25 +21,6 @@ include:
   # License checks
   - name: CheckDependencyLicenses
 
-  # Java specific inspections
-  - name: JavaWarnings
-  - name: JavaAnnotator
-  - name: JavacQuickFix
-  - name: JavaErrorMessages
-
-  # Spring specific inspections
-  - name: SpringBootApplicationYaml
-  - name: SpringBootApplicationProperties
-  - name: SpringComponentScan
-  - name: SpringJavaAutowiredFieldsWarningInspection
-  - name: SpringJavaInjectionPointsAutowiringInspection
-
-  # Maven specific inspections
-  - name: MavenDuplicateDependenciesInspection
-  - name: MavenModelInspection
-  - name: MavenPropertyInParent
-  - name: MavenRedundantGroupId
-
 # Exclude paths from analysis
 exclude:
   - name: All
@@ -49,19 +30,3 @@ exclude:
       - .mvn/
       - mvnw
       - mvnw.cmd
-      - "**/*.md"
-      - "**/*.iml"
-      - "**/*.log"
-      - "**/*.jar"
-      - "**/*.class"
-      - "**/*.hprof"
-      - "**/*.png"
-      - "**/*.jpg"
-      - "**/*.jpeg"
-      - "**/*.gif"
-      - "**/*.svg"
-      - "**/*.ico"
-      - "**/*.woff"
-      - "**/*.woff2"
-      - "**/*.ttf"
-      - "**/*.eot"
