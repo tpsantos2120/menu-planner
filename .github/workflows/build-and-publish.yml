@@ -39,7 +39,7 @@ jobs:
 
       - name: Build and Push Docker image with Jib
         if: github.event_name != 'pull_request'
-        run: mvn -B jib:build -DskipTests -Djib.to.auth.username=${{ github.actor }} -Djib.to.auth.password=${{ secrets.GITHUB_TOKEN }} --file pom.xml
+        run: mvn -B jib:build -DskipTests --file pom.xml
 
       - name: Build Docker image with Jib (without pushing)
         if: github.event_name == 'pull_request'
