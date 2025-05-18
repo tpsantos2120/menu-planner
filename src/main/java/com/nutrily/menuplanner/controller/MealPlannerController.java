@@ -9,7 +9,6 @@ import com.nutrily.menuplanner.entity.MealType;
 import com.nutrily.menuplanner.repository.MealPlannerRepository;
 import com.nutrily.menuplanner.service.MealPlannerService;
 import jakarta.persistence.criteria.Predicate;
-import lombok.Builder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

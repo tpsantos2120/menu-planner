@@ -1,9 +1,6 @@
 package com.nutrily.menuplanner.repository;
 
 import com.nutrily.menuplanner.entity.MealPlanner;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -27,7 +24,4 @@ public interface MealPlannerRepository extends JpaRepository<MealPlanner, UUID>,
 
   // Find meal planners by option
   List<MealPlanner> findByOption(Integer option);
-
-  // Find meal planners with specification and pagination
-  Page<MealPlanner> findAll(Specification<MealPlanner> spec, Pageable pageable);
 }
