@@ -118,8 +118,8 @@ jobs:
       - name: Compile code
         run: mvn clean compile
 
-      # Run Quodana code quality scan
-      - name: Run Quodana Scan
+      # Run Qodana code quality scan
+      - name: Run Qodana Scan
         uses: JetBrains/qodana-action@v2025.1
         with:
           args: --baseline,qodana.sarif.json
