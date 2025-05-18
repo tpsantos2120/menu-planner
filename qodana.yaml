@@ -1,32 +1,54 @@
 version: "1.0"
 linter: jetbrains/qodana-jvm-community:2025.1
-
-# Project configuration
-project:
-  name: menu-planner
-  version: 0.0.2
-  jdk:
-    version: 21
-
 # Profile configuration
 profile:
   name: qodana.recommended
-
 failureConditions:
   severityThresholds:
     any: 0
-
 # Include specific inspections
 include:
   # License checks
   - name: CheckDependencyLicenses
-
+  - name: YAMLSchemaDeprecation
+  - name: YAMLDuplicatedKeys
+  - name: YAMLRecursiveAlias
+  - name: YAMLIncompatibleTypes
+  - name: YAMLUnresolvedAlias
+  - name: YAMLUnusedAnchor
+  - name: YAMLSchemaValidation
+  - name: YAMLSchemaValidation
+  - name: CheckStyle
+  - name: ArgNamesErrorsInspection
+  - name: AroundAdviceStyleInspection
+  - name: DeclareParentsInspection
+  - name: AopLanguageInspection
+  - name: PointcutMethodStyleInspection
+  - name: ArgNamesWarningsInspection
+  - name: JvmLinesOfCodeInspection
+  - name: ComposeErroneousRelation
+  - name: ComposeMissingKeys
+  - name: ComposeUnknownKeys
+  - name: ComposeUnknownValues
+  - name: ComposeUnquotedPorts
+  - name: CyclicJobDependency
+  - name: MandatoryParamsAbsent
+  - name: GithubFunctionSignatureValidation
+  - name: UndefinedAction
+  - name: IllegalJobDependency
+  - name: UndefinedParamsPresent
+  - name: GraphQLDeprecatedSymbols
+  - name: GraphQLUnresolvedReference
+  - name: ThisUsedAsSourcePropertyInspection
+  - name: MapperOrMapperConfigMissing
+  - name: MapperOrMapperConfigMissing
+  - name: NotNullCheckableSourcePropertyUsedWithDefaultValue
+  - name: MapstructReferenceInspection
+  - name: FromMapMappingInspection
+  - name: MoreThanOneDefaultSourceDefined
 # Exclude paths from analysis
 exclude:
   - name: All
     paths:
       - target/
       - .github/
-      - .mvn/
-      - mvnw
-      - mvnw.cmd
