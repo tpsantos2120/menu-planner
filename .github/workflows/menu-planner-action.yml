@@ -3,60 +3,122 @@ name: Menu Planner
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
   pull_request:
     branches: [ master ]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+  workflow_dispatch:
+
+# Define reusable environment setup
+env:
+  JAVA_VERSION: '21'
+  JAVA_DISTRIBUTION: 'temurin'
+  MAVEN_OPTS: '-Xmx512m'
+
+# Define permissions at the top level to avoid repetition
+permissions:
+  contents: read
+  packages: write
+  pull-requests: write
+  actions: read
+  checks: write
+  security-events: write
 
 jobs:
-  build:
+  # Test job to run unit and integration tests
+  test:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      pull-requests: write
-      actions: read
-      checks: write
-      security-events: write
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
           cache: maven
 
+      # Setup Docker for Testcontainers
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Cache Docker images for Testcontainers to speed up tests
+      - name: Cache Docker images
+        uses: actions/cache@v4
+        with:
+          path: ~/.docker
+          key: ${{ runner.os }}-docker-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-docker-
+
+      # Run tests with coverage
+      - name: Run tests with Maven
+        run: mvn -B test verify --file pom.xml
+        env:
+          TESTCONTAINERS_REUSE_ENABLE: true
+
+      # Upload test results as artifacts
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: target/surefire-reports/
+          retention-days: 7
+
+  # Build job to compile and package the application
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          cache: maven
+
+      # Build the application (skipping tests as they've already run)
       - name: Build with Maven
         run: mvn -B package -DskipTests --file pom.xml
 
-  code-quality:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      pull-requests: write
-      actions: read
-      checks: write
-      security-events: write
+      # Cache the built artifacts for later jobs
+      - name: Cache build artifacts
+        uses: actions/cache@v4
+        with:
+          path: target
+          key: ${{ runner.os }}-build-${{ github.sha }}
 
+  # Code quality and security scanning
+  code-quality:
+    runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 21
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
           cache: maven
-      - name: Build with Maven
+
+      # Compile the code for analysis
+      - name: Compile code
         run: mvn clean compile
 
+      # Run Quodana code quality scan
       - name: Run Quodana Scan
         uses: JetBrains/qodana-action@v2023.3
         with:
@@ -64,31 +126,50 @@ jobs:
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
 
-  publish:
-    needs: code-quality
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      pull-requests: write
-      actions: read
-      checks: write
-      security-events: write
+      # Run dependency vulnerability scan
+      - name: Run dependency check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'Menu Planner'
+          path: '.'
+          format: 'HTML'
+          out: 'reports'
+          args: >
+            --enableExperimental
+            --suppression suppression.xml
 
+      # Upload dependency check report
+      - name: Upload dependency check report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: reports
+          retention-days: 7
+
+  # Publish job to build and push Docker image
+  publish:
+    runs-on: ubuntu-latest
+    needs: [test, build, code-quality]
+    if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
           cache: maven
 
-      - name: Build with Maven
-        run: mvn -B package -DskipTests --file pom.xml
+      # Restore cached build artifacts
+      - name: Restore build artifacts
+        uses: actions/cache@v4
+        with:
+          path: target
+          key: ${{ runner.os }}-build-${{ github.sha }}
 
+      # Login to GitHub Container Registry (only for push events)
       - name: Login to GitHub Container Registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
@@ -97,11 +178,18 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.JIB_TOKEN }}
 
+      # Set up Docker Buildx for better caching
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Build and push Docker image with Jib (for push events)
       - name: Build and Push Docker image with Jib
         if: github.event_name != 'pull_request'
         run: |
-          mvn -B jib:build --file pom.xml
+          mvn -B jib:build --file pom.xml -Djib.console=plain
 
+      # Build Docker image locally (for PR events)
       - name: Build Docker image with Jib (without pushing)
         if: github.event_name == 'pull_request'
-        run: mvn -B jib:dockerBuild --file pom.xml
+        run: |
+          mvn -B jib:dockerBuild --file pom.xml -Djib.console=plain
