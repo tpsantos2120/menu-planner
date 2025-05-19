@@ -53,3 +53,8 @@ exclude:
       - target/
       - .github/
       - .mvn
+  - name: unused
+    paths:
+      - src\main\java\com\nutrily\menuplanner\dto\MealPlannerInput.java
+      - src\main\java\com\nutrily\menuplanner\dto\MealTypeInput.java
+      - src\main\java\com\nutrily\menuplanner\dto\DietTypeInput.java
