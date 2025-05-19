@@ -6,12 +6,12 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
+@Table(name = "meal_planner")
 @Getter
 @Setter
 @ToString
-@Builder
-@RequiredArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class MealPlanner {
 
   @Id

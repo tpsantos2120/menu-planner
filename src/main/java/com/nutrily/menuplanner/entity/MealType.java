@@ -2,10 +2,7 @@ package com.nutrily.menuplanner.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -18,7 +15,9 @@ import java.util.UUID;
         })
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class MealType implements Serializable {
 
   @Id

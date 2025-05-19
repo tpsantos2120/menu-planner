@@ -2,7 +2,7 @@ version: "1.0"
 linter: jetbrains/qodana-jvm-community:2025.1
 # Profile configuration
 profile:
-  name: qodana.recommended
+  name: JavaInspectionProfile
 failureConditions:
   severityThresholds:
     any: 0
@@ -52,3 +52,4 @@ exclude:
     paths:
       - target/
       - .github/
+      - .mvn
